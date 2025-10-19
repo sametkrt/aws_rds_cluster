@@ -177,3 +177,39 @@ variable "extra_tags" {
   default     = {}
 }
  
+#  DMS INPUTS
+ variable "enable_dms_source" {
+  description = "Enable settings required to use this PostgreSQL DB as a DMS source."
+  type        = bool
+  default     = true
+}
+
+variable "dms_max_replication_slots" {
+  description = "Max logical replication slots (>= number of DMS CDC tasks + logical publications/subscriptions.)"
+  type        = number
+  default     = 8
+}
+
+variable "dms_max_wal_senders" {
+  description = "Max WAL senders (>= number of active logical slots / DMS tasks)."
+  type        = number
+  default     = 10
+}
+
+variable "dms_max_logical_replication_workers" {
+  description = "Logical replication workers (>= number of active tasks)."
+  type        = number
+  default     = 4
+}
+
+variable "dms_max_worker_processes" {
+  description = "Total background workers; must be >= logical_workers + autovacuum + parallel_workers."
+  type        = number
+  default     = null
+}
+
+variable "dms_allowed_security_group_ids" {
+  description = "Security group IDs of DMS replication instances that should be allowed to connect to the DB on 5432."
+  type        = list(string)
+  default     = []
+}

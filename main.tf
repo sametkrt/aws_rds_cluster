@@ -8,7 +8,7 @@ resource "aws_rds_cluster" "this" {
   backup_retention_period         = var.backup_retention_period
   deletion_protection             = local.cluster_deletion_protection
   storage_encrypted               = var.storage_encrypted
-  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.this.name
+  db_cluster_parameter_group_name = var.enable_dms_source ? aws_rds_cluster_parameter_group.this_dms[0].name : aws_rds_cluster_parameter_group.this.name
   apply_immediately               = var.apply_immediately
   master_username                 = var.cluster_master_username
   master_password                 = sensitive(random_password.this.result)
@@ -27,7 +27,7 @@ resource "aws_rds_cluster_instance" "this" {
   engine                                = aws_rds_cluster.this.engine
   engine_version                        = aws_rds_cluster.this.engine_version
   publicly_accessible                   = var.cluster_publicly_accessible
-  db_parameter_group_name               = aws_db_parameter_group.this.name
+  db_parameter_group_name               = var.enable_dms_source ? aws_db_parameter_group.this_dms[0].name : aws_db_parameter_group.this.name
   apply_immediately                     = var.apply_immediately
   promotion_tier                        = var.instance_promotion_tier
   performance_insights_enabled          = var.performance_insights_enabled

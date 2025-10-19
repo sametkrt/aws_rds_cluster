@@ -9,3 +9,9 @@ output "reader_endpoint" {
 output "security_group_id" {
   value = aws_security_group.this.id
 }
+
+# DMS
+output "dms_parameter_group_name" {
+  value       = try(aws_rds_cluster_parameter_group.this_dms[0].name, null)
+  description = "Cluster parameter group enabling logical replication for DMS"
+}
